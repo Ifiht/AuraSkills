@@ -4,6 +4,7 @@ import dev.aurelium.auraskills.api.damage.DamageMeta;
 import dev.aurelium.auraskills.api.event.damage.DamageEvent;
 import dev.aurelium.auraskills.api.event.user.UserLoadEvent;
 import dev.aurelium.auraskills.api.mana.ManaAbilities;
+import dev.aurelium.auraskills.api.skill.Skills;
 import dev.aurelium.auraskills.bukkit.AuraSkills;
 import dev.aurelium.auraskills.bukkit.mana.ReadiedManaAbility;
 import dev.aurelium.auraskills.bukkit.user.BukkitUser;
@@ -58,6 +59,10 @@ public class Absorption extends ReadiedManaAbility {
 
             if (user.getAbilityData(manaAbility).getBoolean("activated") && isActivated(user)) {
                 handleAbsorbedHit(event, target, user);
+            } else if (user.getSkillLevel(Skills.DEFENSE) > 99) {
+                user.getAbilityData(manaAbility).setData("activated", true);
+                handleAbsorbedHit(event, target, user);
+                user.getAbilityData(manaAbility).setData("activated", false);
             } else if (checkActivation(target)) {
                 handleAbsorbedHit(event, target, user);
             }
